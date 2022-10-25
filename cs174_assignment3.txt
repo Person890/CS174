@@ -1,0 +1,32 @@
+mysql -u root -p
+
+CREATE DATABASE webprogramming;
+
+USE webprogramming;
+
+CREATE OR REPLACE TABLE video (
+camera_id VARCHAR(1000) NOT NULL, 
+# camera_id could contain numbers, symbols, letters, 
+# and we don't know the length of it 
+# use varchar with 1000 characters just to be safe
+firstframetime TIMESTAMP NOT NULL,
+# using time and date of the first frame of the video
+path VARCHAR(1000) NOT NULL,
+# path contains letters and symbols,
+# and we don't know the length of it 
+# use varchar with 1000 characters just to be safe
+thumbnail VARCHAR(1000) NOT NULL,
+# again - letters and symbols, 1000 characters to be safe
+contenthash CHAR(32) NOT NULL,
+# hash stored in binary --> but it's a string of 32 characters
+PRIMARY KEY (contenthash)
+# content hash will probably be unique --> primary key
+);
+
+
+CREATE OR REPLACE TABLE image (
+	videocontenthash CHAR(32) NOT NULL,
+	imagecontent VARCHAR(1000) NOT NULL,
+	imagetaken TIMESTAMP NOT NULL, 
+	FOREIGN KEY (videocontenthash) REFERENCES video (contenthash)
+);
